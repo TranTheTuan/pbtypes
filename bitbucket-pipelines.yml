@@ -1,0 +1,58 @@
+image: hyudq2510/base-protobuf
+
+pipelines:
+  default:
+    - step:
+        name: Generate protobuf Golang and Swagger OpenAPI definition
+        script:
+          - make build
+          - echo "Regenerate completed. Commit and push to repo"
+        artifacts:
+          - build/**
+    - parallel:
+      - step:
+          name: Upload protobuf and grpc definition artifacts
+          script:
+            - git config --global user.email "tranthetuan1998hanam@gmail.com"
+            - git config --global user.name "AutoBot"
+            - git clone "git@bitbucket.org:smart-tech-hub/bm-pbtypes-go.git" "dist/bm-pbtypes-go-repo"
+            - cd dist/bm-pbtypes-go-repo
+            - git checkout -B "${BITBUCKET_BRANCH}"
+            - >
+              if [[ `git ls-remote --heads origin ${BITBUCKET_BRANCH}` ]]; then
+                git pull origin "${BITBUCKET_BRANCH}"
+              fi
+            - cd ../..
+            - rm -rf dist/bm-pbtypes-go-repo/*
+            - cp -avr -T build/bitbucket.org/smart-tech-hub/bm-pbtypes-go dist/bm-pbtypes-go-repo/
+            - cd dist/bm-pbtypes-go-repo
+            - git status
+            - >
+              if [[ `git status --porcelain` ]]; then
+                git add -A
+                git commit -m "[Auto generate] Regenerate golang protobuf code in build ${BITBUCKET_BUILD_NUMBER}" --quiet
+
+                git push origin "${BITBUCKET_BRANCH}"
+              fi
+      - step:
+          name: Upload Swagger OpenAPI definition artifacts
+          script:
+            - git config --global user.email "tranthetuan1998hanam@gmail.com"
+            - git config --global user.name "AutoBot"
+            - git clone "git@bitbucket.org:smart-tech-hub/bm-pbtypes-swagger.git" "dist/bm-pbtypes-swagger-repo"
+            - cd dist/bm-pbtypes-swagger-repo
+            - git checkout -B "${BITBUCKET_BRANCH}"
+            - >
+              if [[ `git ls-remote --heads origin ${BITBUCKET_BRANCH}` ]]; then
+                git pull origin "${BITBUCKET_BRANCH}"
+              fi
+            - cd ../..
+            - rm -rf dist/bm-pbtypes-swagger-repo/*
+            - cp -avr -T build/swagger/OpenAPI/ dist/bm-pbtypes-swagger-repo/
+            - cd dist/bm-pbtypes-swagger-repo
+            - >
+              if [[ `git status --porcelain` ]]; then
+                git add -A
+                git commit -m "[Auto generate] Regenerate Swagger definition ${BITBUCKET_BUILD_NUMBER}" --quiet
+                git push origin ${BITBUCKET_BRANCH}
+              fi
