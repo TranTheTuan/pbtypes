@@ -1,17 +1,19 @@
 syntax = "proto3";
 
-package bptypes.auth.v1;
+package auth.v1;
 
-option go_package = "github.com/TranTheTuan/auth/v1";
+option go_package = "github.com/TranTheTuan/auth";
 
 service AuthorizeService {
   rpc Authorize(AuthorizeRequest) returns (AuthorizeResponse);
 }
 
 message AuthorizeRequest {
-  string title = 1;
+  string casbin_user = 1;
+  string request_uri = 2;
+  string method = 3;
 }
 
 message AuthorizeResponse {
-  string id = 1;
+  bool pass = 1;
 }
