@@ -9,9 +9,11 @@ service AuthorizeService {
 }
 
 message AuthorizeRequest {
-  string title = 1;
+  string casbin_user = 1;
+  string request_uri = 2;
+  string method = 3;
 }
 
 message AuthorizeResponse {
-  string id = 1;
+  bool is_authorized = 1;
 }
