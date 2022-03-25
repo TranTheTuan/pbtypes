@@ -28,5 +28,5 @@ jobs:
           --go_out=$GEN_OUT_DIR \
           $(find $PROTO_DIR -type f -name '*.proto')
         env:
-          GEN_OUT_DIR: $GITHUB_WORKSPACE/build/go
-          PROTO_DIR: $GITHUB_WORKSPACE
+          GEN_OUT_DIR: ./build/go
+          PROTO_DIR: ./
