@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package auth;
 
-option go_package = "github.com/TranTheTuan/auth/v1";
+option go_package = "github.com/TranTheTuan/auth";
 
 service AuthorizeService {
   rpc Authorize(AuthorizeRequest) returns (AuthorizeResponse);
