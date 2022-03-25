@@ -15,5 +15,5 @@ message AuthorizeRequest {
 }
 
 message AuthorizeResponse {
-  bool is_authorized = 1;
+  bool pass = 1;
 }
