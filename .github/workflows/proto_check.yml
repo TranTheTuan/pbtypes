@@ -25,10 +25,9 @@ jobs:
           export PATH="$PATH:$(go env GOPATH)/bin"
       - name: Generating protos
         run: |
-          mkdir -p $GEN_OUT_DIR
           protoc -I=$PROTO_DIR \
           --go_out=$GEN_OUT_DIR \
           $(find $PROTO_DIR -type f -name '*.proto')
         env:
-          GEN_OUT_DIR: ./build/go
+          GEN_OUT_DIR: ./
           PROTO_DIR: ./
