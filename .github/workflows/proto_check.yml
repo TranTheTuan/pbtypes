@@ -22,6 +22,7 @@ jobs:
         run: |
           go get github.com/golang/protobuf/protoc-gen-go
           go get google.golang.org/grpc/cmd/protoc-gen-go-grpc
+          export PATH="$PATH:$(go env GOPATH)/bin"
       - name: Generating protos
         run: |
           mkdir -p $GEN_OUT_DIR
@@ -29,5 +30,5 @@ jobs:
           --go_out=$GEN_OUT_DIR \
           $(find $PROTO_DIR -type f -name '*.proto')
         env:
-          GEN_OUT_DIR: auth/build/go
-          PROTO_DIR: auth
+          GEN_OUT_DIR: ./build/go
+          PROTO_DIR: ./
