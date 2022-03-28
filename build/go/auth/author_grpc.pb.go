@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthorizeServiceClient interface {
 	Authorize(ctx context.Context, in *AuthorizeRequest, opts ...grpc.CallOption) (*AuthorizeResponse, error)
+	VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...grpc.CallOption) (*VerifyTokenResponse, error)
 }
 
 type authorizeServiceClient struct {
@@ -42,11 +43,21 @@ func (c *authorizeServiceClient) Authorize(ctx context.Context, in *AuthorizeReq
 	return out, nil
 }
 
+func (c *authorizeServiceClient) VerifyToken(ctx context.Context, in *VerifyTokenRequest, opts ...grpc.CallOption) (*VerifyTokenResponse, error) {
+	out := new(VerifyTokenResponse)
+	err := c.cc.Invoke(ctx, "/auth.v1.AuthorizeService/VerifyToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthorizeServiceServer is the server API for AuthorizeService service.
 // All implementations must embed UnimplementedAuthorizeServiceServer
 // for forward compatibility
 type AuthorizeServiceServer interface {
 	Authorize(context.Context, *AuthorizeRequest) (*AuthorizeResponse, error)
+	VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenResponse, error)
 	mustEmbedUnimplementedAuthorizeServiceServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedAuthorizeServiceServer struct {
 
 func (UnimplementedAuthorizeServiceServer) Authorize(context.Context, *AuthorizeRequest) (*AuthorizeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Authorize not implemented")
+}
+func (UnimplementedAuthorizeServiceServer) VerifyToken(context.Context, *VerifyTokenRequest) (*VerifyTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyToken not implemented")
 }
 func (UnimplementedAuthorizeServiceServer) mustEmbedUnimplementedAuthorizeServiceServer() {}
 
@@ -88,6 +102,24 @@ func _AuthorizeService_Authorize_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthorizeService_VerifyToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthorizeServiceServer).VerifyToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/auth.v1.AuthorizeService/VerifyToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthorizeServiceServer).VerifyToken(ctx, req.(*VerifyTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthorizeService_ServiceDesc is the grpc.ServiceDesc for AuthorizeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +130,10 @@ var AuthorizeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Authorize",
 			Handler:    _AuthorizeService_Authorize_Handler,
+		},
+		{
+			MethodName: "VerifyToken",
+			Handler:    _AuthorizeService_VerifyToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

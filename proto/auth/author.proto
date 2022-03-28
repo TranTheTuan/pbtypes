@@ -5,8 +5,8 @@ package auth.v1;
 option go_package = "/auth";
 
 service AuthorizeService {
-  rpc Authorize(AuthorizeRequest) returns (AuthorizeResponse) {
-  }
+  rpc Authorize(AuthorizeRequest) returns (AuthorizeResponse) {}
+  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse) {}
 }
 
 message AuthorizeRequest {
@@ -17,4 +17,12 @@ message AuthorizeRequest {
 
 message AuthorizeResponse {
   bool pass = 1;
+}
+
+message VerifyTokenRequest {
+  string token = 1;
+}
+
+message VerifyTokenResponse {
+  uint32 id = 1;
 }
