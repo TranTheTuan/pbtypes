@@ -5,7 +5,8 @@ package auth.v1;
 option go_package = "/auth";
 
 service AuthorizeService {
-  rpc Authorize(AuthorizeRequest) returns (AuthorizeResponse);
+  rpc Authorize(AuthorizeRequest) returns (AuthorizeResponse) {
+  }
 }
 
 message AuthorizeRequest {
