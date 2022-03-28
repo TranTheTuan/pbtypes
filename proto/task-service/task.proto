@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package task.v1;
+
+option go_package = "/tasks";
+
+import "google/api/annotations.proto";
+import "google/protobug/empty.proto";
+import "proto/core/pagination.proto";
+
+service TaskService {
+  rpc GetTasks(google.protobuf.Empty) returns (GetTasksResponse) {
+    option (google.api.http) = {
+        get: "/v1/tasks"
+    };
+  }
+  rpc GetTaskByID(GetTaskByIDRequest) returns (GetTaskByIDResponse) {
+    option (google.api.http) = {
+        get: "/v1/tasks/{id}"
+    };
+  }
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
+    option (google.api.http) = {
+        post: "/v1/tasks"
+        body: "*"
+    };
+  }
+  rpc UpdateTask(UpdateTaskRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+        put: "/v1/tasks/{id}"
+        body: "*"
+    };
+  }
+  rpc DeleteTaskByID(DeleteTaskByIDRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+        delete: "/v1/tasks/{id}"
+    };
+  }
+}
+
+message Task {
+    uint32 id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+message GetTasksResponse {
+  repeated Task data = 1;
+  core.v1.Pagination metadata = 2;
+}
+
+message GetTaskByIDRequest {
+    uint32 id = 1;
+}
+
+message GetTaskByIDResponse {
+    Task data = 1;
+}
+
+message CreateTaskRequest {
+    string name = 1;
+    string description = 2;
+}
+
+message CreateTaskResponse {
+    Task data = 1;
+}
+
+message UpdateTaskRequest {
+    uint32 id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+message DeleteTaskByIDRequest {
+    uint32 id = 1;
+}
