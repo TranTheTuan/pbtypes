@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package core.v1;
+
+option go_package = "/core";
+
+message Pagination {
+    uint32 limit = 1;
+    uint32 page = 2;
+    uint32 total = 3;
+    uint32 total_pages = 4;
+    string sort = 5;
+}
