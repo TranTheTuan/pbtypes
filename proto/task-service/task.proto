@@ -9,7 +9,7 @@ import "google/protobug/empty.proto";
 import "proto/core/pagination.proto";
 
 service TaskService {
-  rpc GetTasks(google.protobuf.Empty) returns (GetTasksResponse) {
+  rpc GetTasks(GetTasksRequest) returns (GetTasksResponse) {
     option (google.api.http) = {
         get: "/v1/tasks"
     };
@@ -42,6 +42,13 @@ message Task {
     uint32 id = 1;
     string name = 2;
     string description = 3;
+}
+
+message GetTasksRequest {
+  uint32 limit = 1;
+  uint32 page = 2;
+  string keyword = 3;
+  string sort = 4;
 }
 
 message GetTasksResponse {
