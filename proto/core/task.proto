@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package core.v1;
+
+option go_package = "github.com/TranTheTuan/pbtypes/build/go/core";
+
+message Task {
+    uint32 id = 1;
+    string name = 2;
+    string description = 3;
+}

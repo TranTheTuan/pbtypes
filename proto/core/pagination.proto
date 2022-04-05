@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package core.v1;
 
-option go_package = "/core";
+option go_package = "github.com/TranTheTuan/pbtypes/build/go/core";
 
 message Pagination {
     uint32 limit = 1;

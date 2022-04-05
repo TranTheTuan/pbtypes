@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package task.v1;
+
+option go_package = "github.com/TranTheTuan/pbtypes/build/go/tasks";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service TaskDeleteService {
+  rpc DeleteTaskByID(DeleteTaskByIDRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+        delete: "/v1/tasks/{id}"
+    };
+  }
+}
+
+message DeleteTaskByIDRequest {
+    uint32 id = 1;
+}
