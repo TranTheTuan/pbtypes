@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package task.v1;
+
+option go_package = "github.com/TranTheTuan/pbtypes/build/go/tasks";
+
+import "google/api/annotations.proto";
+import "proto/core/pagination.proto";
+import "proto/core/task.proto";
+
+service TaskGetAllService {
+  rpc GetTasks(GetTasksRequest) returns (GetTasksResponse) {
+    option (google.api.http) = {
+        get: "/v1/tasks"
+    };
+  }
+}
+
+message GetTasksRequest {
+  uint32 limit = 1;
+  uint32 page = 2;
+  string keyword = 3;
+  string sort = 4;
+}
+
+message GetTasksResponse {
+  repeated core.v1.Task data = 1;
+  core.v1.Pagination metadata = 2;
+}

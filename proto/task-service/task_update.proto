@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package task.v1;
+
+option go_package = "github.com/TranTheTuan/pbtypes/build/go/tasks";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service TaskUpdateService {
+  rpc UpdateTask(UpdateTaskRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+        put: "/v1/tasks/{id}"
+        body: "*"
+    };
+  }
+}
+
+message UpdateTaskRequest {
+    uint32 id = 1;
+    string name = 2;
+    string description = 3;
+}
+
