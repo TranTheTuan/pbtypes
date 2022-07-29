@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package task.v1;
+
+option go_package = "github.com/TranTheTuan/pbtypes/build/go/tasks";
+
+import "google/api/annotations.proto";
+import "proto/core/task.proto";
+
+service TaskService {
+    rpc BatchUpdateTask(BatchUpdateTaskRequest) returns (BatchUpdateTaskResponse) {
+        option (google.api.http) = {
+            put: "/v1/tasks"
+            body: "*"
+        };
+    }
+}
+
+message BatchUpdateTaskRequest {
+    repeated core.v1.Task task = 1;
+}
+
+message BatchUpdateTaskResponse {
+    repeated core.v1.BatchResponse data = 1;
+}

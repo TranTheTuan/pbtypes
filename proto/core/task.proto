@@ -9,3 +9,9 @@ message Task {
     string name = 2;
     string description = 3;
 }
+
+message BatchResponse {
+    uint32 number_of_tasks = 1;
+    uint32 number_of_successful_tasks = 2;
+    repeated uint32 failed_task_ids = 3;
+}
